@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tale.dao.LogsDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.tale.model.entity.Logs" id="logsMap">
+        <result property="id" column="id"/>
+        <result property="action" column="action"/>
+        <result property="data" column="data"/>
+        <result property="authorId" column="author_id"/>
+        <result property="ip" column="ip"/>
+        <result property="created" column="created"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.tale.model.entity.Logs">
+        select * from t_logs where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.tale.model.entity.Logs">
+        select * from t_logs
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_logs
+    </select>
+
+    <insert id="save" parameterType="com.tale.model.entity.Logs" useGeneratedKeys="true" keyProperty="id">
+        insert into t_logs
+        (
+        `action`,
+        `data`,
+        `author_id`,
+        `ip`,
+        `created`
+        )
+        values
+        (
+        #{action},
+        #{data},
+        #{authorId},
+        #{ip},
+        #{created}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.tale.model.entity.Logs">
+        update t_logs
+        <set>
+            <if test="action != null">`action` = #{action}, </if>
+            <if test="data != null">`data` = #{data}, </if>
+            <if test="authorId != null">`author_id` = #{authorId}, </if>
+            <if test="ip != null">`ip` = #{ip}, </if>
+            <if test="created != null">`created` = #{created}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from t_logs where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from t_logs where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

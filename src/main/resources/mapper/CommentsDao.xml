@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tale.dao.CommentsDao">
+
+    <select id="queryObject" resultType="com.tale.model.entity.Comments">
+        select * from t_comments where coid = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.tale.model.entity.Comments">
+        select * from t_comments
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by coid desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_comments
+    </select>
+
+    <insert id="save" parameterType="com.tale.model.entity.Comments" useGeneratedKeys="true" keyProperty="coid">
+        insert into t_comments
+        (
+        `cid`,
+        `created`,
+        `author`,
+        `author_id`,
+        `owner_id`,
+        `mail`,
+        `url`,
+        `ip`,
+        `agent`,
+        `contents`,
+        `type`,
+        `status`,
+        `parent`
+        )
+        values
+        (
+        #{cid},
+        #{created},
+        #{author},
+        #{authorId},
+        #{ownerId},
+        #{mail},
+        #{url},
+        #{ip},
+        #{agent},
+        #{contents},
+        #{type},
+        #{status},
+        #{parent}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.tale.model.entity.Comments">
+        update t_comments
+        <set>
+            <if test="cid != null">`cid` = #{cid}, </if>
+            <if test="created != null">`created` = #{created}, </if>
+            <if test="author != null">`author` = #{author}, </if>
+            <if test="authorId != null">`author_id` = #{authorId}, </if>
+            <if test="ownerId != null">`owner_id` = #{ownerId}, </if>
+            <if test="mail != null">`mail` = #{mail}, </if>
+            <if test="url != null">`url` = #{url}, </if>
+            <if test="ip != null">`ip` = #{ip}, </if>
+            <if test="agent != null">`agent` = #{agent}, </if>
+            <if test="contents != null">`contents` = #{contents}, </if>
+            <if test="type != null">`type` = #{type}, </if>
+            <if test="status != null">`status` = #{status}, </if>
+            <if test="parent != null">`parent` = #{parent}</if>
+        </set>
+        where coid = #{coid}
+    </update>
+
+    <delete id="delete">
+        delete from t_comments where coid = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from t_comments where coid in
+        <foreach item="coid" collection="array" open="(" separator="," close=")">
+            #{coid}
+        </foreach>
+    </delete>
+
+</mapper>

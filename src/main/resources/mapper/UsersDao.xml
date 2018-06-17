@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tale.dao.UsersDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.tale.model.entity.Users" id="usersMap">
+        <result property="uid" column="uid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="homeUrl" column="home_url"/>
+        <result property="screenName" column="screen_name"/>
+        <result property="created" column="created"/>
+        <result property="activated" column="activated"/>
+        <result property="logged" column="logged"/>
+        <result property="groupName" column="group_name"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.tale.model.entity.Users">
+        select * from t_users where uid = #{value}
+    </select>
+
+    <sql id="queryByWhere">
+        <where>
+            <if test="uid!=null">
+                and uid=#{uid}
+            </if>
+            <if test="username!=null and username!=''">
+                and username=#{username}
+            </if>
+            <if test="password!=null and password!=''">
+                and password=#{password}
+            </if>
+            <if test="email!=null and email!=''">
+                and email=#{email}
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryList" resultType="com.tale.model.entity.Users">
+        select * from t_users
+        <include refid="queryByWhere" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by uid desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_users
+        <include refid="queryByWhere" />
+    </select>
+
+    <insert id="save" parameterType="com.tale.model.entity.Users" useGeneratedKeys="true" keyProperty="uid">
+        insert into t_users
+        (
+        `username`,
+        `password`,
+        `email`,
+        `home_url`,
+        `screen_name`,
+        `created`,
+        `activated`,
+        `logged`,
+        `group_name`
+        )
+        values
+        (
+        #{username},
+        #{password},
+        #{email},
+        #{homeUrl},
+        #{screenName},
+        #{created},
+        #{activated},
+        #{logged},
+        #{groupName}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.tale.model.entity.Users">
+        update t_users
+        <set>
+            <if test="username != null">`username` = #{username}, </if>
+            <if test="password != null">`password` = #{password}, </if>
+            <if test="email != null">`email` = #{email}, </if>
+            <if test="homeUrl != null">`home_url` = #{homeUrl}, </if>
+            <if test="screenName != null">`screen_name` = #{screenName}, </if>
+            <if test="created != null">`created` = #{created}, </if>
+            <if test="activated != null">`activated` = #{activated}, </if>
+            <if test="logged != null">`logged` = #{logged}, </if>
+            <if test="groupName != null">`group_name` = #{groupName}</if>
+        </set>
+        where uid = #{uid}
+    </update>
+
+    <delete id="delete">
+        delete from t_users where uid = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from t_users where uid in
+        <foreach item="uid" collection="array" open="(" separator="," close=")">
+            #{uid}
+        </foreach>
+    </delete>
+
+</mapper>

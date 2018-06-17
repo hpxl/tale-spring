@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tale.dao.OptionsDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.tale.model.entity.Options" id="tOptionsMap">
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <select id="queryObject" resultType="com.tale.model.entity.Options">
+        select * from t_options where name = #{value}
+    </select>
+
+    <sql id="query_by_where">
+        <where>
+            <if test="name!=null">
+                and name=#{name}
+            </if>
+            <if test="keyword!=null">
+                <![CDATA[ and name like #{keyword}]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryList" resultType="com.tale.model.entity.Options">
+        select * from t_options
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by name desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_options
+        <include refid="query_by_where" />
+    </select>
+
+    <insert id="save" parameterType="com.tale.model.entity.Options">
+        insert into t_options
+        (
+        `name`,
+        `value`,
+        `description`
+        )
+        values
+        (
+        #{name},
+        #{value},
+        #{description}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.tale.model.entity.Options">
+        update t_options
+        <set>
+            <if test="value != null">`value` = #{value}, </if>
+            <if test="description != null">`description` = #{description}</if>
+        </set>
+        where name = #{name}
+    </update>
+
+    <delete id="delete">
+        delete from t_options where name = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from t_options where name in
+        <foreach item="name" collection="array" open="(" separator="," close=")">
+            #{name}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tale.dao.RelationshipsDao">
+    <sql id="Base_Column_List">
+        cid, mid
+    </sql>
+    <select id="queryObject" resultType="com.tale.model.entity.Relationships">
+        select <include refid="Base_Column_List"/> from t_relationships where cid = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.tale.model.entity.Relationships">
+        select <include refid="Base_Column_List"/> from t_relationships
+        <where>
+            <if test="cid != null">
+                and `cid` = #{cid}
+            </if>
+            <if test="mid != null">
+                and `mid` = #{mid}
+            </if>
+            <!--  数据过滤  -->
+            ${filterSql}
+        </where>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from t_relationships
+        <where>
+            <if test="cid != null">
+                and `cid` = #{cid}
+            </if>
+            <if test="mid != null">
+                and `mid` = #{mid}
+            </if>
+            <!--  数据过滤  -->
+            ${filterSql}
+        </where>
+    </select>
+
+    <insert id="save" parameterType="com.tale.model.entity.Relationships">
+        insert into t_relationships
+        (
+        `cid`,
+        `mid`
+        )
+        values
+        (
+        #{cid},
+        #{mid}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.tale.model.entity.Relationships">
+        update t_relationships
+        <set>
+            <if test="mid != null">`mid` = #{mid}</if>
+        </set>
+        where cid = #{cid}
+    </update>
+
+    <delete id="delete">
+        delete from t_relationships where cid = #{cid}
+        <if test="mid != null">
+            and mid = #{mid}
+        </if>
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from t_relationships where cid in
+        <foreach item="cid" collection="array" open="(" separator="," close=")">
+            #{cid}
+        </foreach>
+    </delete>
+</mapper>
