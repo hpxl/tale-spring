@@ -24,17 +24,17 @@
         cid, title, slug, created, thumb_img, modified, content, author_id, type, status, tags, categories, hits,
         comments_num, allow_comment, allow_ping, allow_feed
     </sql>
-    <select id="queryById" resultType="com.tale.model.entity.Contents">
+    <select id="queryById" resultType="com.tale.model.entity.Contents" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from t_contents
         where cid=#{value}
     </select>
 
-    <select id="queryObject" resultType="com.tale.model.entity.Contents">
+    <select id="queryObject" resultType="com.tale.model.entity.Contents" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from t_contents
         where cid=#{value}
     </select>
 
-    <select id="queryByWhere" resultType="com.tale.model.entity.Contents">
+    <select id="queryByWhere" resultType="com.tale.model.entity.Contents" resultMap="BaseResultMap">
         select <include refid="Base_Column_List"/> from t_contents
         <include refid="query_by_where" />
     </select>

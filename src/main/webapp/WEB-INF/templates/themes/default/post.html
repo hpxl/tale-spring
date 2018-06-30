@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:yh="http://www.thymeleaf.org">
-<div th:replace="themes/default/header::header(${article.title},${article.tags})"></div>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="themes/default/header::header(${article.title},${article.tags})"></head>
+<body gtools_scp_screen_capture_injected="true">
+<div th:replace="themes/default/body_header::browsehappy"></div>
+<div th:replace="themes/default/body_header::header"></div>
 <article class="main-content post-page" itemscope="" itemtype="http://schema.org/Article">
     <div class="post-header">
         <h1 class="post-title" itemprop="name headline">

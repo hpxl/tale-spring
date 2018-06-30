@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="themes/default/header::header(title='文章归档',keywords=null)"></div>
-<body>
+<head th:replace="themes/default/header::header(title='文章归档',keywords=null)"></head>
+<body gtools_scp_screen_capture_injected="true" class="bg-grey">
+<div th:replace="themes/default/body_header::browsehappy"></div>
+<div th:replace="themes/default/body_header::header"></div>
 <div class="main-content archive-page clearfix">
     <div class="categorys-item">
         <th:block th:each="archive : ${archives}">
@@ -27,6 +29,6 @@
         </th:block>
     </div>
 </div>
-</body>
 <div th:replace="themes/default/footer::footer"></div>
+</body>
 </html>

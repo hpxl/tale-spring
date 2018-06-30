@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/admin/article")
+@Transactional(rollbackFor = TipException.class)
 public class ArticleController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleController.class);
 
@@ -54,6 +56,7 @@ public class ArticleController extends BaseController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
         params.put("limit", limit);
+        params.put("type", Types.ARTICLE);
         Query query = new Query(params);
         List<Contents> articles = contentsService.queryList(query);
         request.setAttribute("articles", articles);

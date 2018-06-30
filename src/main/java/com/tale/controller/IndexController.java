@@ -93,6 +93,7 @@ public class IndexController extends BaseController {
         if (null == contents || "draft".equals(contents.getStatus())) {
             return this.render_404();
         }
+        LOGGER.info("article" + contents);
         request.setAttribute("article", contents);
         request.setAttribute("is_post", true);
         completeArticle(request, contents);

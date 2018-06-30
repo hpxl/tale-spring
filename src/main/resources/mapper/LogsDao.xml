@@ -4,7 +4,7 @@
 <mapper namespace="com.tale.dao.LogsDao">
 
     <!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.tale.model.entity.Logs" id="logsMap">
+    <resultMap id="BaseResultMap" type="com.tale.model.entity.Logs">
         <result property="id" column="id"/>
         <result property="action" column="action"/>
         <result property="data" column="data"/>

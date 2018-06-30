@@ -2,8 +2,8 @@
 <configuration debug="false" scan="true" scanPeriod="1 seconds">
 
     <contextName>logback</contextName>
-    <!-- <property name="log.path" value="/opt/logs/tale-spring"/> -->
-    <property name="log.path" value="./logs"/>
+    <property name="log.path" value="/opt/logs/tale-spring"/>
+    <!-- <property name="log.path" value="./logs"/> -->
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!-- <filter class="ch.qos.logback.classic.filter.ThresholdFilter" >
@@ -25,9 +25,34 @@
         </encoder>
     </appender>
 
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="console"/>
         <appender-ref ref="file"/>
     </root>
+
+    <logger name="com.tale" level="DEBUG" />
+    <logger name="ch.qos.logback" level="INFO" />
+    <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework.web.servlet.mvc.method" level="DEBUG" />
+    <logger name="org.apache.ibatis" level="DEBUG" />
+    <logger name="org.mybatis.spring" level="INFO" />
+    <logger name="org.hibernate.cache" level="INFO" />
+    <logger name="org.apache.struts2" level="INFO" />
+    <logger name="org.apache.commons" level="INFO" />
+    <logger name="org.apache.http" level="INFO" />
+    <logger name="org.apache.velocity" level="ERROR" />
+    <logger name="org.apache.tiles" level="ERROR" />
+    <logger name="freemarker" level="ERROR" />
+    <logger name="com.opensymphony.xwork2" level="ERROR" />
+    <logger name="org.apache.commons.validator.ValidatorResources"
+            level="INFO" />
+
+    <logger name="java.sql.Connection" level="DEBUG" />
+    <logger name="java.sql.Statement" level="DEBUG" />
+    <logger name="java.sql.PreparedStatement" level="DEBUG" />
+    <logger name="java.sql.ResultSet" level="DEBUG" />
+    <logger name="org.mybatis" level="DEBUG" />
+    <logger name="org.dozer" level="ERROR" />
+
 
 </configuration>
